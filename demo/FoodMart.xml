@@ -30,6 +30,30 @@
         <Property name="Street address" column="store_street_address" type="String"/>
       </Level>
     </Hierarchy>
+    <!-- Level Expression -->
+    <Hierarchy hasAll="true" name="LevelExp" primaryKey="store_id">
+      <Table name="store"/>
+      <Level name="Store Country" column="data" uniqueMembers="true">
+        <KeyExpression>
+          <SQL>store.data->>'store_country'</SQL>
+        </KeyExpression>
+      </Level>
+      <Level name="Store State" column="data" uniqueMembers="true">
+        <KeyExpression>
+          <SQL>store.data->>'store_state'</SQL>
+        </KeyExpression>
+      </Level>
+      <Level name="Store City" column="data" uniqueMembers="false">
+        <KeyExpression>
+          <SQL>store.data->>'store_city'</SQL>
+        </KeyExpression>
+      </Level>
+      <Level name="Store Name" column="data" uniqueMembers="true">
+        <KeyExpression>
+          <SQL>store.data->>'store_name'</SQL>
+        </KeyExpression>
+      </Level>
+    </Hierarchy>
   </Dimension>
 
   <Dimension name="Store Size in SQFT">
