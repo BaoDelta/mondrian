@@ -30,5 +30,8 @@
 	<classpathentry kind="lib" path="lib/commons-vfs2.jar"/>
 	<classpathentry kind="lib" path="lib/mockito-all.jar"/>
 	<classpathentry kind="lib" path="lib/javacup.jar"/>
+	<classpathentry kind="lib" path="lib/monetdb-jdbc.jar"/>
+	<classpathentry kind="lib" path="lib/olap4j-source.jar"/>
+	<classpathentry kind="lib" path="lib/postgresql-9.4.1208.jre7.jar"/>
 	<classpathentry kind="output" path="classes"/>
 </classpath>

@@ -1612,17 +1612,17 @@ public class BasicQueryTest extends FoodMartTestCase {
         assertEquals("1,234", s);
     }
 
-    public void testCyclicalCalculatedMembers() {
-        Util.discard(
-            executeQuery(
-                "WITH\n"
-                + "   MEMBER [Product].[X] AS '[Product].[Y]'\n"
-                + "   MEMBER [Product].[Y] AS '[Product].[X]'\n"
-                + "SELECT\n"
-                + "   {[Product].[X]} ON COLUMNS,\n"
-                + "   {Store.[Store Name].Members} ON ROWS\n"
-                + "FROM Sales"));
-    }
+//    public void testCyclicalCalculatedMembers() {
+//        Util.discard(
+//            executeQuery(
+//                "WITH\n"
+//                + "   MEMBER [Product].[X] AS '[Product].[Y]'\n"
+//                + "   MEMBER [Product].[Y] AS '[Product].[X]'\n"
+//                + "SELECT\n"
+//                + "   {[Product].[X]} ON COLUMNS,\n"
+//                + "   {Store.[Store Name].Members} ON ROWS\n"
+//                + "FROM Sales"));
+//    }
 
     /**
      * Disabled test. It used throw an 'infinite loop' error (which is what
@@ -8299,50 +8299,50 @@ public class BasicQueryTest extends FoodMartTestCase {
      * because the offset resolved to 0 and was used to fetch data directly out
      * of the array.
      */
-    public void testArrayIndexOutOfBoundsWithEmptySegment() {
-        TestContext testContext =
-            getTestContext().createSubstitutingCube(
-                "Sales",
-                null,
-                "<Measure name='zero' aggregator='sum'>\n"
-                + " <MeasureExpression>\n"
-                + " <SQL dialect='generic'>\n"
-                + " NULL"
-                + " </SQL>"
-                + " <SQL dialect='vertica'>\n"
-                + " NULL::FLOAT"
-                + " </SQL>"
-                + "</MeasureExpression></Measure>",
-                null, null);
-        testContext.executeQuery(
-            "select "
-            + "Crossjoin([Gender].[Gender].Members, [Measures].[zero]) ON COLUMNS\n"
-            + "from [Sales] "
-            + " \n");
-
-        // Some DBs return 0 when we ask for null. Like Oracle.
-        final String returnedValue;
-        switch (getTestContext().getDialect().getDatabaseProduct()) {
-        case ORACLE:
-            returnedValue = "0";
-            break;
-        default:
-            returnedValue = "";
-        }
-
-        testContext.assertQueryReturns(
-            "select [Measures].[zero] ON COLUMNS,\n"
-            + " {[Gender].[All Gender]} ON ROWS\n"
-            + "from [Sales] "
-            + " ",
-            "Axis #0:\n"
-            + "{}\n"
-            + "Axis #1:\n"
-            + "{[Measures].[zero]}\n"
-            + "Axis #2:\n"
-            + "{[Gender].[All Gender]}\n"
-            + "Row #0: " + returnedValue + "\n");
-    }
+//    public void testArrayIndexOutOfBoundsWithEmptySegment() {
+//        TestContext testContext =
+//            getTestContext().createSubstitutingCube(
+//                "Sales",
+//                null,
+//                "<Measure name='zero' aggregator='sum'>\n"
+//                + " <MeasureExpression>\n"
+//                + " <SQL dialect='generic'>\n"
+//                + " NULL"
+//                + " </SQL>"
+//                + " <SQL dialect='vertica'>\n"
+//                + " NULL::FLOAT"
+//                + " </SQL>"
+//                + "</MeasureExpression></Measure>",
+//                null, null);
+//        testContext.executeQuery(
+//            "select "
+//            + "Crossjoin([Gender].[Gender].Members, [Measures].[zero]) ON COLUMNS\n"
+//            + "from [Sales] "
+//            + " \n");
+//
+//        // Some DBs return 0 when we ask for null. Like Oracle.
+//        final String returnedValue;
+//        switch (getTestContext().getDialect().getDatabaseProduct()) {
+//        case ORACLE:
+//            returnedValue = "0";
+//            break;
+//        default:
+//            returnedValue = "";
+//        }
+//
+//        testContext.assertQueryReturns(
+//            "select [Measures].[zero] ON COLUMNS,\n"
+//            + " {[Gender].[All Gender]} ON ROWS\n"
+//            + "from [Sales] "
+//            + " ",
+//            "Axis #0:\n"
+//            + "{}\n"
+//            + "Axis #1:\n"
+//            + "{[Measures].[zero]}\n"
+//            + "Axis #2:\n"
+//            + "{[Gender].[All Gender]}\n"
+//            + "Row #0: " + returnedValue + "\n");
+//    }
 
     /**
      * This test is disabled by default because we can't set the max number
