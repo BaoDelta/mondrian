@@ -31,26 +31,53 @@
       </Level>
     </Hierarchy>
     <!-- Level Expression -->
-    <Hierarchy hasAll="true" name="LevelExp" primaryKey="store_id">
+    <Hierarchy hasAll="true" name="Level Exp" primaryKey="store_id">
       <Table name="store"/>
-      <Level name="Store Country" column="data" uniqueMembers="true">
+      <Level name="Store Country" uniqueMembers="true">
         <KeyExpression>
-          <SQL>store.data->>'store_country'</SQL>
+          <SQL><![CDATA[store_data->>'store_country']]></SQL>
         </KeyExpression>
       </Level>
-      <Level name="Store State" column="data" uniqueMembers="true">
+      <Level name="Store State" uniqueMembers="true">
         <KeyExpression>
-          <SQL>store.data->>'store_state'</SQL>
+          <SQL><![CDATA[store_data->>'store_state']]></SQL>
         </KeyExpression>
       </Level>
-      <Level name="Store City" column="data" uniqueMembers="false">
+      <Level name="Store City" uniqueMembers="false">
         <KeyExpression>
-          <SQL>store.data->>'store_city'</SQL>
+          <SQL><![CDATA[store_data->>'store_city']]></SQL>
         </KeyExpression>
       </Level>
-      <Level name="Store Name" column="data" uniqueMembers="true">
+      <Level name="Store Name" uniqueMembers="true">
         <KeyExpression>
-          <SQL>store.data->>'store_name'</SQL>
+          <SQL><![CDATA[store_data->>'store_name']]></SQL>
+        </KeyExpression>
+      </Level>
+    </Hierarchy>
+    <!-- Hierarchy Expression -->
+    <Hierarchy hasAll="true" name="Hierarchy Exp" primaryKey="store_data">
+      <PrimaryKeyExpression>
+        <SQL><![CDATA[(store_data->>'store_id')::integer]]></SQL>
+      </PrimaryKeyExpression>
+      <Table name="store"/>
+      <Level name="Store Country" uniqueMembers="true">
+        <KeyExpression>
+          <SQL><![CDATA[store_data->>'store_country']]></SQL>
+        </KeyExpression>
+      </Level>
+      <Level name="Store State" uniqueMembers="true">
+        <KeyExpression>
+          <SQL><![CDATA[store_data->>'store_state']]></SQL>
+        </KeyExpression>
+      </Level>
+      <Level name="Store City" uniqueMembers="false">
+        <KeyExpression>
+          <SQL><![CDATA[store_data->>'store_city']]></SQL>
+        </KeyExpression>
+      </Level>
+      <Level name="Store Name" uniqueMembers="true">
+        <KeyExpression>
+          <SQL><![CDATA[store_data->>'store_name']]></SQL>
         </KeyExpression>
       </Level>
     </Hierarchy>
@@ -184,6 +211,12 @@ WHERE "product"."product_class_id" = "product_class"."product_class_id"
   </Table>
 
   <DimensionUsage name="Store" source="Store" foreignKey="store_id"/>
+  <!-- DimensionUsage Expression -->
+  <DimensionUsage name="Store Exp" source="Store" foreignKey="sales_data">
+    <ForeignKeyExpression>
+      <SQL><![CDATA[(sales_data->>'store_id')::integer]]></SQL>
+    </ForeignKeyExpression>
+  </DimensionUsage>
   <DimensionUsage name="Store Size in SQFT" source="Store Size in SQFT"
       foreignKey="store_id"/>
   <DimensionUsage name="Store Type" source="Store Type" foreignKey="store_id"/>
@@ -318,6 +351,12 @@ fullname
 
   <Measure name="Unit Sales" column="unit_sales" aggregator="sum"
       formatString="Standard"/>
+  <!-- Measure Expression -->
+  <Measure name="Unit Sales Exp" aggregator="sum" formatString="Standard">
+    <MeasureExpression>
+      <SQL><![CDATA[(sales_data->>'unit_sales')::numeric]]></SQL>
+    </MeasureExpression>
+  </Measure>
   <Measure name="Store Cost" column="store_cost" aggregator="sum"
       formatString="#,###.00"/>
   <Measure name="Store Sales" column="store_sales" aggregator="sum"

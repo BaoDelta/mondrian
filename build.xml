@@ -279,7 +279,7 @@ demo/FoodMartCreateData.sql"/>
 
   <target name="clean" depends="subfloor.clean">
     <delete includeEmptyDirs="true" quiet="true">
-      <fileset dir="${lib.dir}" includes="*" excludes="mondrian.xsd,xml-apis.jar"/>
+      <fileset dir="${lib.dir}" includes="*" excludes="mondrian.xsd,xml-apis.jar,postgresql-9.4.1208.jre7.jar"/>
       <fileset dir="${classes.dir}" includes="**/*.class,**/*.properties"/>
       <fileset dir="${testclasses.dir}" includes="**/*.class,**/*.properties"/>
       <fileset dir="." includes="${generated.java.files},${generated.lib.files},VERSION.txt"/>
