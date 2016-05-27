@@ -14,6 +14,7 @@
 package mondrian.rolap;
 
 import mondrian.olap.*;
+import mondrian.olap.MondrianDef.ForeignKeyExpression;
 import mondrian.resource.MondrianResource;
 
 import org.apache.log4j.Logger;
@@ -84,6 +85,12 @@ public class HierarchyUsage {
     private final String foreignKey;
 
     /**
+     * The foreign key expression by which this {@link Hierarchy} is joined to
+     * the {@link #fact} table.
+     */
+    private final ForeignKeyExpression foreignKeyExp;
+
+    /**
      * not NULL for DimensionUsage
      * NULL for Dimension
      */
@@ -112,6 +119,8 @@ public class HierarchyUsage {
      */
     private MondrianDef.Expression joinExp;
 
+    private String joinColumnName;
+
     private final Kind kind;
 
     /**
@@ -135,6 +144,7 @@ public class HierarchyUsage {
         // foreignKey
         this.name = cubeDim.name;
         this.foreignKey = cubeDim.foreignKey;
+        this.foreignKeyExp = cubeDim.foreignKeyExp;
 
         if (cubeDim instanceof MondrianDef.DimensionUsage) {
             this.kind = Kind.SHARED;
@@ -263,6 +273,9 @@ public class HierarchyUsage {
     public String getForeignKey() {
         return this.foreignKey;
     }
+    public ForeignKeyExpression getForeignKeyExp() {
+        return foreignKeyExp;
+    }
     public String getSource() {
         return this.source;
     }
@@ -279,6 +292,10 @@ public class HierarchyUsage {
 
     public MondrianDef.Expression getJoinExp() {
         return this.joinExp;
+    }
+
+    public String getJoinColumnName() {
+        return joinColumnName;
     }
 
     public Kind getKind() {
@@ -368,7 +385,7 @@ public class HierarchyUsage {
                 findJoinTable(
                     hierarchy,
                     hierarchy.getXmlHierarchy().primaryKeyTable);
-            this.joinExp =
+            this.joinExp = hierarchy.getXmlHierarchy().primaryKeyExp != null ? hierarchy.getXmlHierarchy().primaryKeyExp :
                 new MondrianDef.Column(
                     this.joinTable.getAlias(),
                     hierarchy.getXmlHierarchy().primaryKey);
@@ -382,6 +399,11 @@ public class HierarchyUsage {
                     hierarchy,
                     joinLevel.getKeyExp().getTableAlias());
             this.joinExp = joinLevel.getKeyExp();
+        }
+        if (joinExp instanceof MondrianDef.Column) {
+            joinColumnName = ((MondrianDef.Column) joinExp).getColumnName();
+        } else {
+            joinColumnName = hierarchy.getXmlHierarchy().primaryKey;
         }
 
         // Unless this hierarchy is drawing from the fact table, we need

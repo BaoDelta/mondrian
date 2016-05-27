@@ -104,13 +104,11 @@ public class RolapCubeHierarchy extends RolapHierarchy {
 
         // re-alias names if necessary
         if (!usingCubeFact) {
-            // join expressions are columns only
-            assert (usage.getJoinExp() instanceof MondrianDef.Column);
             currentRelation =
                 this.cubeDimension.getCube().getStar().getUniqueRelation(
                     rolapHierarchy.getRelation(),
                     usage.getForeignKey(),
-                    ((MondrianDef.Column)usage.getJoinExp()).getColumnName(),
+                    usage.getJoinColumnName(),
                     usage.getJoinTable().getAlias());
         } else {
             currentRelation = rolapHierarchy.getRelation();

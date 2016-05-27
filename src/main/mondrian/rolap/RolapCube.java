@@ -1809,7 +1809,7 @@ public class RolapCube extends CubeBase {
                     //   right column
                     RolapStar.Condition joinCondition =
                         new RolapStar.Condition(
-                            column,
+                            hierarchyUsage.getForeignKeyExp() != null ? hierarchyUsage.getForeignKeyExp() : column,
                             hierarchyUsage.getJoinExp());
 
                     // (rchen) potential bug?:

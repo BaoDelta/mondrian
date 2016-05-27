@@ -153,6 +153,11 @@ Revision is $Id$
         <Object name="annotations" type="Annotations" required="false">
             <Doc>Contains values of user-defined properties.</Doc>
         </Object>
+        <Object name="foreignKeyExp" type="ForeignKeyExpression" required="false">
+            <Doc>
+                The SQL expression used to populate this dimension's foreign key.
+            </Doc>
+        </Object>
         <Code><![CDATA[
             /**
              * Looks up the base dimension of this dimension. If this is a
@@ -597,6 +602,12 @@ Revision is $Id$
 
         <Object name="annotations" type="Annotations" required="false">
             <Doc>Contains values of user-defined properties.</Doc>
+        </Object>
+        <Object name="primaryKeyExp" type="PrimaryKeyExpression" required="false">
+            <Doc>
+                The SQL expression used to calculate the primary key which identifies members,
+                and which is referenced by rows in the fact table.
+            </Doc>
         </Object>
         <Object name="relation" type="RelationOrJoin">
             <Doc>
@@ -2061,6 +2072,8 @@ Revision is $Id$
     </Element>
 
     <Element type="KeyExpression" class="ExpressionView"/>
+    <Element type="ForeignKeyExpression" class="ExpressionView"/>
+    <Element type="PrimaryKeyExpression" class="ExpressionView"/>
     <Element type="ParentExpression" class="ExpressionView"/>
     <Element type="OrdinalExpression" class="ExpressionView"/>
     <Element type="NameExpression" class="ExpressionView"/>
