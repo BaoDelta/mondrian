@@ -744,12 +744,12 @@ public class XmlaBasicTest extends XmlaBaseTestCase {
             + "<Schema name=\"foodmart-xmla-alias-bug\">\n"
             + "  <Dimension name=\"Customers\">\n"
             + "    <Hierarchy hasAll=\"true\" allMemberName=\"All Customers\" primaryKey=\"customer_id\">\n"
-            + "      <Table schema=\"foodmart\" name=\"customer\"/>\n"
+            + "      <Table name=\"customer\"/>\n"
             + "      <Level name=\"Country\" column=\"country\" type=\"String\" uniqueMembers=\"true\" levelType=\"Regular\"\n"
             + "             hideMemberIf=\"Never\"/>\n"
             + "    </Hierarchy>\n" + "  </Dimension>\n" + "\n"
             + "<Cube name=\"Sales\" defaultMeasure=\"Unit Sales\" cache=\"true\" enabled=\"true\">\n"
-            + "  <Table schema=\"foodmart\" name=\"sales_fact_1998\" />\n"
+            + "  <Table name=\"sales_fact_1998\" />\n"
             + "  <DimensionUsage source=\"Customers\" caption=\"Customers\" name=\"Customers-Alias\" visible=\"true\"\n"
             + "                  foreignKey=\"customer_id\" />\n"
             + "  <Measure name=\"Unit Sales\" column=\"unit_sales\" aggregator=\"sum\"\n"
@@ -916,7 +916,9 @@ public class XmlaBasicTest extends XmlaBaseTestCase {
                         public Access getAccess(Member member) {
                             String mname =
                                 "[Customers].[Mexico]";
-                            if (member.getUniqueName().equals(mname)) {
+                            //Members inherit access from their parents. If you deny access to California, you won't be able to see San Francisco.
+                            //need to restrict children as well.
+                            if (member.getUniqueName().startsWith(mname)) {
                                 return Access.NONE;
                             } else {
                                 return Access.ALL;

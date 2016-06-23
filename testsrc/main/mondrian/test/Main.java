@@ -227,6 +227,7 @@ public class Main extends TestSuite {
             addTest(suite, ResultComparatorTest.class, "suite");
             addTest(suite, DrillThroughTest.class);
             addTest(suite, DrillThroughFieldListTest.class);
+            addTest(suite, DrillThroughExcludeFilterTest.class);
             addTest(suite, ScenarioTest.class);
             addTest(suite, BasicQueryTest.class);
             addTest(suite, SegmentCacheTest.class);
@@ -386,6 +387,7 @@ public class Main extends TestSuite {
             addTest(suite, ExplicitRecognizerTest.class);
             addTest(suite, AggregationOverAggTableTest.class);
             addTest(suite, XmlUtilTest.class);
+            addTest(suite, NativeEvalVirtualCubeTest.class);
             addTest(suite, NamespaceContextImplTest.class);
             addTest(suite, CancellationTest.class);
 
